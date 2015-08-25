@@ -7,10 +7,6 @@ var classNames = require('classnames')
 var escapeHTML = require('escape-html')
 var isServer = typeof window === 'undefined'
 
-if (!isServer) {
-  var selectionRange = require('selection-range')
-}
-
 var noop = function(){}
 
 /**
@@ -56,9 +52,6 @@ var ContentEditable = React.createClass({
   shouldComponentUpdate: function(nextProps) {
     var el = React.findDOMNode(this)
     if (nextProps.html !== el.innerHTML) {
-      if (nextProps.html) {
-        this._range = selectionRange(el)
-      }
       return true
     }
 
@@ -84,11 +77,6 @@ var ContentEditable = React.createClass({
   componentDidUpdate: function() {
     if (!this.props.editing && !this.props.html) {
       this.props.onChange('')
-    }
-
-    if (this._range) {
-      selectionRange(React.findDOMNode(this), this._range)
-      delete this._range
     }
   },
 
